@@ -1,0 +1,16 @@
+[
+{
+  "modid": "cristalinewater",
+  "name": "Cristaline Water",
+  "description": "Intento de hacer el agua mas transparente en 1.7.10",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["mikanon"],
+  "credits": "unimixins",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

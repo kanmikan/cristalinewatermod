@@ -1,0 +1,20 @@
+{
+    "required": true,
+    "minVersion": "0.7.11",
+    "package": "com.mikanon.cristalinewater.mixin",
+    "refmap": "mixins.cristalinewater.refmap.json",
+    "compatibilityLevel": "JAVA_8",
+	"overwrites": {
+		"conformVisibility": true
+	},
+    "mixins": [
+      "MixinBlockLiquid"
+    ],
+	"client": [
+      "MixinEntityRenderer",
+      "MixinItemRenderer",
+      "MixinClientBlockLiquid"
+	],
+	"server": [
+	]
+}
