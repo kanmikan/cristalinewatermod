@@ -1,10 +1,12 @@
 package com.mikanon.cristalinewater.biome;
 
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.biome.BiomeGenBase;
 
 public class BiomeColors {
 
-    private static int defaultColor = 0x3F76E4;
+    private static final int DEFAULT_WATER = 0x3F76E4;
+    public static final int DEFAULT_BIOME_BLEND_RADIUS = 2;
 
     public static int getColorForBiome(BiomeGenBase biome) {
         int biomeColor;
@@ -21,7 +23,7 @@ public class BiomeColors {
             biomeColor = 0x2D5E77; //4159204;
         }
 
-        return blend(defaultColor, biomeColor, 0.3f);
+        return blend(DEFAULT_WATER, biomeColor, 0.6f);
     }
 
     private static int blend(int color1, int color2, float ratio) {
@@ -40,11 +42,22 @@ public class BiomeColors {
         return (r << 16) | (g << 8) | b;
     }
 
-    public static float[] color2FogTint(int color, float factor) {
-        float r = ((color >> 16) & 0xFF) / 255.0f * factor;
-        float g = ((color >> 8) & 0xFF) / 255.0f * factor;
-        float b = (color & 0xFF) / 255.0f * factor;
-        return new float[]{r, g, b};
+    public static int[] averageColorBlend(IBlockAccess world, int x, int z, int radio) {
+        int r = 0, g = 0, b = 0;
+
+        int count = 0;
+        for (int dx = -radio; dx <= radio; dx++) {
+            for (int dz = -radio; dz <= radio; dz++) {
+                BiomeGenBase biome = world.getBiomeGenForCoords(x + dx, z + dz);
+                int color = BiomeColors.getColorForBiome(biome);
+                r += (color >> 16) & 0xFF;
+                g += (color >> 8) & 0xFF;
+                b += color & 0xFF;
+                count++;
+            }
+        }
+
+        return new int[]{r, g, b, count};
     }
 
 }

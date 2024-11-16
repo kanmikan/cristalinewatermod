@@ -10,7 +10,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
@@ -48,16 +47,16 @@ public abstract class MixinEntityRenderer {
     @Shadow
     private float bossColorModifierPrev;
 
-    private float FOG_DENSITY = 0.025F;
-    private float FOG_TRANSPARENCY = 0.4F;
-    private float FOG_BLEND_FACTOR = 0.5F;
+    private float FOG_DENSITY = 0.030F; //0.025F;
+    private float FOG_ALPHA = 0.3F; //0.4F;
+    //private float FOG_BLEND_FACTOR = 0.6F; //0.5F;
 
     @Inject(method = "setupFog", at = @At("HEAD"), cancellable = true)
     private void onSetupFog(int pass, float partialTicks, CallbackInfo ci) {
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-        World world = Minecraft.getMinecraft().theWorld;
 
         if (player != null && player.isInWater()) {
+            World world = Minecraft.getMinecraft().theWorld;
 
             int eyePosX = MathHelper.floor_double(player.posX);
             int eyePosY = MathHelper.floor_double(player.posY + player.getEyeHeight());
@@ -65,11 +64,15 @@ public abstract class MixinEntityRenderer {
 
             if (world.getBlock(eyePosX, eyePosY, eyePosZ) == Blocks.water) {
 
-                BiomeGenBase biome = world.getBiomeGenForCoords(eyePosX, eyePosZ);
-                float[] fogColor = BiomeColors.color2FogTint(BiomeColors.getColorForBiome(biome), FOG_BLEND_FACTOR);
+                int[] average = BiomeColors.averageColorBlend(world, eyePosX, eyePosZ, BiomeColors.DEFAULT_BIOME_BLEND_RADIUS);
+
+                float fogR = (float) (average[0] / average[3]) / 255.0F;
+                float fogG = (float) (average[1] / average[3]) / 255.0F;
+                float fogB = (float) (average[2] / average[3]) / 255.0F;
 
                 FloatBuffer fogColorBuffer = BufferUtils.createFloatBuffer(4);
-                fogColorBuffer.put(new float[]{fogColor[0], fogColor[1], fogColor[2], FOG_TRANSPARENCY}).flip();
+                fogColorBuffer.put(new float[]{fogR, fogG, fogB, FOG_ALPHA}).flip();
+
                 GL11.glFog(GL11.GL_FOG_COLOR, fogColorBuffer);
                 GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_EXP);
                 GL11.glFogf(GL11.GL_FOG_DENSITY, FOG_DENSITY);
@@ -83,9 +86,8 @@ public abstract class MixinEntityRenderer {
     private void onUpdateLightmap(float partialTick, CallbackInfo ci) {
 
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-        World world = Minecraft.getMinecraft().theWorld;
-
         if (player != null && player.isInWater()) {
+            World world = Minecraft.getMinecraft().theWorld;
             int eyePosX = MathHelper.floor_double(player.posX);
             int eyePosY = MathHelper.floor_double(player.posY + player.getEyeHeight());
             int eyePosZ = MathHelper.floor_double(player.posZ);
@@ -110,7 +112,7 @@ public abstract class MixinEntityRenderer {
                     f2 = world.provider.lightBrightnessTable[i / 16]; // rayo
                 }
 
-                sun = sun * 0.1F; // factor de 10% de la luz solar
+                sun = sun * 0.15F; // factor de 15% de la luz solar
                 f2 = f2 + sun; //sumado a todos los bloques
                 f3 = f3 * 1.8F; //y mayor intensidad de las lamparas bajo el agua
 
