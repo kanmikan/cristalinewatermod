@@ -8,12 +8,15 @@
 		"conformVisibility": true
 	},
     "mixins": [
-      "MixinBlockLiquid"
+      "MixinBlockLiquid",
+      "MixinBlockAccessor",
+	  "MixinEntityPlayer"
     ],
 	"client": [
       "MixinEntityRenderer",
       "MixinItemRenderer",
-      "MixinClientBlockLiquid"
+      "MixinClientBlockLiquid",
+      "MixinRenderGlobal"
 	],
 	"server": [
 	]

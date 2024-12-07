@@ -44,12 +44,12 @@ public abstract class MixinClientBlockLiquid {
 
     @Inject(method = "registerBlockIcons", at = @At("HEAD"), cancellable = true)
     private void onRegisterBlockIcons(IIconRegister registry, CallbackInfo ci) {
-        IIcon[] custom = new IIcon[2];
         Block block = (Block) (Object) this;
         if (block.getMaterial() == Material.water) {
-            custom[0] = registry.registerIcon(CristalineWater.MODID + ":water_still");
-            custom[1] = registry.registerIcon(CristalineWater.MODID + ":water_flow");
-            setField_149806_a(custom);
+            setField_149806_a(new IIcon[]{
+                    registry.registerIcon(CristalineWater.MODID + ":water_still"),
+                    registry.registerIcon(CristalineWater.MODID + ":water_flow")
+            });
             ci.cancel();
         }
     }

@@ -6,7 +6,8 @@ import net.minecraft.world.biome.BiomeGenBase;
 public class BiomeColors {
 
     private static final int DEFAULT_WATER = 0x3F76E4;
-    public static final int DEFAULT_BIOME_BLEND_RADIUS = 2;
+    public static final int DEFAULT_BIOME_BLEND_RADIUS = 1;
+    public static final int DEFAULT_FOG_BLEND_RADIUS = 2;
 
     public static int getColorForBiome(BiomeGenBase biome) {
         int biomeColor;
@@ -18,7 +19,7 @@ public class BiomeColors {
         } else if (biome == BiomeGenBase.swampland) {
             biomeColor = 0x3E8000;
         } else if (biome == BiomeGenBase.river) {
-            biomeColor = 0x2D5E77;
+            biomeColor = 0x4761C5; //0x2D5E77
         } else {
             biomeColor = 0x2D5E77; //4159204;
         }

@@ -13,6 +13,7 @@ public abstract class MixinBlockLiquid {
     private void onConstructor(CallbackInfo info) {
         BlockLiquid blockLiquid = (BlockLiquid) (Object) this;
         blockLiquid.setLightOpacity(0);
+        //((MixinBlockAccessor) blockLiquid).setUseNeighborBrightness(true);
     }
 
 }
