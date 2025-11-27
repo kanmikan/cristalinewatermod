@@ -20,8 +20,11 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "1.0"
-group= "com.mikanon.cristalinewater" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+version = "1.1"
+group= "com.mikanon.cristalinewater"
 archivesBaseName = "cristalinewater"
 def modid = "cristalinewater"
 

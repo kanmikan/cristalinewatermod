@@ -1,5 +1,6 @@
 package com.mikanon.cristalinewater.mixin;
 
+import com.mikanon.cristalinewater.Config;
 import com.mikanon.cristalinewater.biome.BiomeColors;
 import com.mikanon.cristalinewater.utils.Utils;
 import net.minecraft.client.Minecraft;
@@ -65,7 +66,7 @@ public abstract class MixinEntityRenderer {
 
             boolean underwaterVolume = Utils.underWaterVolume(player.worldObj, eyePosX, eyePosY, eyePosZ);
             if ((player.worldObj.getBlock(eyePosX, eyePosY, eyePosZ) == Blocks.water) || underwaterVolume) {
-                int[] averageColor = BiomeColors.averageColorBlend(player.worldObj, eyePosX, eyePosZ, BiomeColors.DEFAULT_FOG_BLEND_RADIUS);
+                int[] averageColor = BiomeColors.averageColorBlend(player.worldObj, eyePosX, eyePosZ, Config.DEFAULT_FOG_BLEND_RADIUS);
 
                 float fogR = (float) (averageColor[0] / averageColor[3]) / 255.0F;
                 float fogG = (float) (averageColor[1] / averageColor[3]) / 255.0F;

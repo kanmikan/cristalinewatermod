@@ -16,7 +16,9 @@
       "MixinEntityRenderer",
       "MixinItemRenderer",
       "MixinClientBlockLiquid",
-      "MixinRenderGlobal"
+      "MixinRenderGlobal",
+      "MixinEntity",
+      "MixinRenderBlocks"
 	],
 	"server": [
 	]

@@ -1,0 +1,38 @@
+{
+    "underwater.ambience": {
+        "category": "ambient",
+        "sounds": [
+            {
+                "name": "underwater/underwater_ambience",
+                "stream": true
+            }
+        ]
+    },
+    "water.enter": {
+        "category": "player",
+        "sounds": [
+            "water/enter1",
+            "water/enter2",
+            "water/enter3"
+        ]
+    },
+    "water.exit": {
+        "category": "player",
+        "sounds": [
+            "water/exit1",
+            "water/exit2",
+            "water/exit3"
+        ]
+    },
+    "underwater.bubbles": {
+        "category": "ambient",
+        "sounds": [
+            "underwater/bubbles1",
+            "underwater/bubbles2",
+            "underwater/bubbles3",
+            "underwater/bubbles4",
+            "underwater/bubbles5",
+            "underwater/bubbles6"
+        ]
+    }
+}

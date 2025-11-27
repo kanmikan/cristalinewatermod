@@ -1,31 +1,31 @@
 package com.mikanon.cristalinewater.biome;
 
+import com.mikanon.cristalinewater.Config;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.biome.BiomeGenBase;
 
 public class BiomeColors {
 
-    private static final int DEFAULT_WATER = 0x3F76E4;
-    public static final int DEFAULT_BIOME_BLEND_RADIUS = 1;
-    public static final int DEFAULT_FOG_BLEND_RADIUS = 2;
+    //private static final int DEFAULT_WATER = 0x3F76E4;
+    //public static final int DEFAULT_BIOME_BLEND_RADIUS = 1;
+    //public static final int DEFAULT_FOG_BLEND_RADIUS = 2;
+
+    public static final String[] DEFAULT_BIOME_COLORS = new String[]{
+            "ocean:3F76E4",
+            "frozen ocean:4F98B1",
+            "swampland:3E8000",
+            "river:4761C5",
+            "default:2D5E77"
+    };
 
     public static int getColorForBiome(BiomeGenBase biome) {
-        int biomeColor;
+        int defaultColor = Config.BIOME_COLORS.getOrDefault("default", 0x2D5E77);
+        if (biome == null) return defaultColor;
+        int biomeColor = Config.BIOME_COLORS.getOrDefault(biome.biomeName.trim().toLowerCase(), defaultColor);
 
-        if (biome == BiomeGenBase.ocean) {
-            biomeColor = 0x3F76E4;
-        } else if (biome == BiomeGenBase.frozenOcean) {
-            biomeColor = 0x4F98B1;
-        } else if (biome == BiomeGenBase.swampland) {
-            biomeColor = 0x3E8000;
-        } else if (biome == BiomeGenBase.river) {
-            biomeColor = 0x4761C5; //0x2D5E77
-        } else {
-            biomeColor = 0x2D5E77; //4159204;
-        }
-
-        return blend(DEFAULT_WATER, biomeColor, 0.6f);
+        return blend(Config.DEFAULT_WATER, biomeColor, 0.6f);
     }
+
 
     private static int blend(int color1, int color2, float ratio) {
         int r1 = (color1 >> 16) & 0xFF;

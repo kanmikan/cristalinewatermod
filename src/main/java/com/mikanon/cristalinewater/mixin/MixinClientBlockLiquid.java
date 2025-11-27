@@ -1,5 +1,6 @@
 package com.mikanon.cristalinewater.mixin;
 
+import com.mikanon.cristalinewater.Config;
 import com.mikanon.cristalinewater.CristalineWater;
 import com.mikanon.cristalinewater.biome.BiomeColors;
 import net.minecraft.block.Block;
@@ -21,22 +22,21 @@ public abstract class MixinClientBlockLiquid {
     @Accessor("field_149806_a")
     abstract void setField_149806_a(IIcon[] icons);
 
+    /*
     @Inject(method = "colorMultiplier", at = @At("HEAD"), cancellable = true)
     private void onColorMultiplier(IBlockAccess world, int x, int y, int z, CallbackInfoReturnable<Integer> cir) {
         Block block = (Block) (Object) this;
         if (block.getMaterial() == Material.water) {
-
-            int[] average = BiomeColors.averageColorBlend(world, x, z, BiomeColors.DEFAULT_BIOME_BLEND_RADIUS);
+            int[] average = BiomeColors.averageColorBlend(world, x, z, Config.DEFAULT_BIOME_BLEND_RADIUS);
             int result = ((average[0] / average[3]) << 16) | ((average[1] / average[3]) << 8) | (average[2] / average[3]);
             cir.setReturnValue(result);
-
         }
-    }
+    }*/
 
     @Inject(method = "shouldSideBeRendered", at = @At("HEAD"), cancellable = true)
     private void onShouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side, CallbackInfoReturnable<Boolean> cir) {
         Block adjacentBlock = world.getBlock(x, y, z);
-        if (adjacentBlock.getMaterial() == Material.glass) {
+        if (adjacentBlock.getMaterial() == Material.glass && Config.TRANSPARENT_WATER_SIDES) {
             //hacer transparente el agua que toca el cristal, se ve bien dependiendo del caso.
             cir.setReturnValue(false);
         }
@@ -45,7 +45,7 @@ public abstract class MixinClientBlockLiquid {
     @Inject(method = "registerBlockIcons", at = @At("HEAD"), cancellable = true)
     private void onRegisterBlockIcons(IIconRegister registry, CallbackInfo ci) {
         Block block = (Block) (Object) this;
-        if (block.getMaterial() == Material.water) {
+        if (block.getMaterial() == Material.water && Config.GRAYSCALE_WATER) {
             setField_149806_a(new IIcon[]{
                     registry.registerIcon(CristalineWater.MODID + ":water_still"),
                     registry.registerIcon(CristalineWater.MODID + ":water_flow")

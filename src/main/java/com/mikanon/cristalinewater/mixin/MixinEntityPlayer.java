@@ -1,10 +1,7 @@
 package com.mikanon.cristalinewater.mixin;
 
-import com.mikanon.cristalinewater.utils.Utils;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.MathHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -25,4 +22,5 @@ public abstract class MixinEntityPlayer {
         }
         player.getEntityData().setFloat("timeUnderwater", time);
     }
+
 }

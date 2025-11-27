@@ -1,5 +1,6 @@
 package com.mikanon.cristalinewater.mixin;
 
+import com.mikanon.cristalinewater.Config;
 import com.mikanon.cristalinewater.biome.BiomeColors;
 import com.mikanon.cristalinewater.utils.Utils;
 import net.minecraft.client.Minecraft;
@@ -33,7 +34,7 @@ public class MixinRenderGlobal {
 
             if ((player.worldObj.getBlock(eyePosX, eyePosY, eyePosZ) == Blocks.water) || Utils.underWaterVolume(player.worldObj, eyePosX, eyePosY, eyePosZ)) {
 
-                int[] average = BiomeColors.averageColorBlend(player.worldObj, eyePosX, eyePosZ, BiomeColors.DEFAULT_BIOME_BLEND_RADIUS);
+                int[] average = BiomeColors.averageColorBlend(player.worldObj, eyePosX, eyePosZ, Config.DEFAULT_BIOME_BLEND_RADIUS);
                 float skyR = (float) (average[0] / average[3]) / 255.0F;
                 float skyG = (float) (average[1] / average[3]) / 255.0F;
                 float skyB = (float) (average[2] / average[3]) / 255.0F;
