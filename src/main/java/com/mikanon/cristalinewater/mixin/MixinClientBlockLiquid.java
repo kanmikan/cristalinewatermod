@@ -22,7 +22,7 @@ public abstract class MixinClientBlockLiquid {
     @Accessor("field_149806_a")
     abstract void setField_149806_a(IIcon[] icons);
 
-    /*
+    //TODO duplicado pero necesario.
     @Inject(method = "colorMultiplier", at = @At("HEAD"), cancellable = true)
     private void onColorMultiplier(IBlockAccess world, int x, int y, int z, CallbackInfoReturnable<Integer> cir) {
         Block block = (Block) (Object) this;
@@ -31,7 +31,7 @@ public abstract class MixinClientBlockLiquid {
             int result = ((average[0] / average[3]) << 16) | ((average[1] / average[3]) << 8) | (average[2] / average[3]);
             cir.setReturnValue(result);
         }
-    }*/
+    }
 
     @Inject(method = "shouldSideBeRendered", at = @At("HEAD"), cancellable = true)
     private void onShouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side, CallbackInfoReturnable<Boolean> cir) {
