@@ -65,7 +65,8 @@ public abstract class MixinEntityRenderer {
             int eyePosZ = MathHelper.floor_double(player.posZ);
 
             boolean underwaterVolume = Utils.underWaterVolume(player.worldObj, eyePosX, eyePosY, eyePosZ);
-            if ((player.worldObj.getBlock(eyePosX, eyePosY, eyePosZ) == Blocks.water) || underwaterVolume) {
+
+            if ((player.worldObj.getBlock(eyePosX, eyePosY, eyePosZ) == Blocks.water) || underwaterVolume || Utils.isWaterPlant(player.worldObj, eyePosX, eyePosY, eyePosZ)) {
                 int[] averageColor = BiomeColors.averageColorBlend(player.worldObj, eyePosX, eyePosZ, Config.DEFAULT_FOG_BLEND_RADIUS);
 
                 float fogR = (float) (averageColor[0] / averageColor[3]) / 255.0F;
@@ -117,7 +118,7 @@ public abstract class MixinEntityRenderer {
             int eyePosY = MathHelper.floor_double(player.posY + player.getEyeHeight());
             int eyePosZ = MathHelper.floor_double(player.posZ);
 
-            if ((player.worldObj.getBlock(eyePosX, eyePosY, eyePosZ) == Blocks.water) || Utils.underWaterVolume(player.worldObj, eyePosX, eyePosY, eyePosZ)) {
+            if ((player.worldObj.getBlock(eyePosX, eyePosY, eyePosZ) == Blocks.water) || Utils.underWaterVolume(player.worldObj, eyePosX, eyePosY, eyePosZ) || Utils.isWaterPlant(player.worldObj, eyePosX, eyePosY, eyePosZ)) {
                 updateLightmapUnderwater(partialTick);
                 ci.cancel();
             }

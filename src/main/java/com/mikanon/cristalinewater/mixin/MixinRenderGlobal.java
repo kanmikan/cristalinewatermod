@@ -32,7 +32,7 @@ public class MixinRenderGlobal {
             int eyePosY = MathHelper.floor_double(player.posY + player.getEyeHeight());
             int eyePosZ = MathHelper.floor_double(player.posZ);
 
-            if ((player.worldObj.getBlock(eyePosX, eyePosY, eyePosZ) == Blocks.water) || Utils.underWaterVolume(player.worldObj, eyePosX, eyePosY, eyePosZ)) {
+            if ((player.worldObj.getBlock(eyePosX, eyePosY, eyePosZ) == Blocks.water) || Utils.underWaterVolume(player.worldObj, eyePosX, eyePosY, eyePosZ) || Utils.isWaterPlant(player.worldObj, eyePosX, eyePosY, eyePosZ) ) {
 
                 int[] average = BiomeColors.averageColorBlend(player.worldObj, eyePosX, eyePosZ, Config.DEFAULT_BIOME_BLEND_RADIUS);
                 float skyR = (float) (average[0] / average[3]) / 255.0F;

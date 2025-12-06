@@ -15,7 +15,7 @@ public class MixinItemRenderer {
     private void onRenderWarpedTextureOverlay(float p_78448_1_, CallbackInfo ci) {
 
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-        if (player != null && player.isInWater()) {
+        if (player != null /*&& player.isInWater()*/) {
             ci.cancel();
         }
 

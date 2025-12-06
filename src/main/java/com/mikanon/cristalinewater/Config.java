@@ -20,6 +20,10 @@ public class Config {
     public static boolean TRANSPARENT_WATER_SIDES = true;
     public static boolean UNDERWATER_SOUNDS = true;
 
+    public static boolean UNDERWATER_AIR_POCKETS = true;
+    public static int UNDERWATER_AIR_VOLUME_CHECK_AREA = 10;
+    public static int UNDERWATER_AIR_VOLUME_MIN_AREA = 4;
+
     public static Map<String, Integer> BIOME_COLORS = new HashMap<>();
 
     public static void preInit(FMLPreInitializationEvent event) {
@@ -37,6 +41,10 @@ public class Config {
         DEFAULT_WATER = config.get("graphics", "BaseWaterColor", DEFAULT_WATER, "Default water color").getInt();
         DEFAULT_BIOME_BLEND_RADIUS = config.get("graphics", "BiomeBlendRadius", DEFAULT_BIOME_BLEND_RADIUS, "Water biome blending radius (in blocks), bigger value = smoother and slower").getInt();
         DEFAULT_FOG_BLEND_RADIUS = config.get("graphics", "FogBlendRadius", DEFAULT_FOG_BLEND_RADIUS, "The blending radius of the fog transition between biomes").getInt();
+
+        UNDERWATER_AIR_POCKETS = config.get("graphics", "UnderwaterAirPockets", true, "If true, glass structures underwater under certain conditions, should render the custom fog and lighting").getBoolean();
+        UNDERWATER_AIR_VOLUME_CHECK_AREA = config.get("graphics", "UnderwaterAirVolumeCheckArea", UNDERWATER_AIR_VOLUME_CHECK_AREA, "The Y distance check for any water block above the air pocket").getInt();
+        UNDERWATER_AIR_VOLUME_MIN_AREA = config.get("graphics", "UnderwaterAirVolumeMinArea", UNDERWATER_AIR_VOLUME_MIN_AREA, "The minimal number of water blocks that should be detected above the air pocket to enable the underwater fog and lighting").getInt();
 
         Property biomeProp = config.get("biomeColors", "BiomeColorOverrides", BiomeColors.DEFAULT_BIOME_COLORS, "Format: biomeName:hexColor");
         parseBiomeColorMap(biomeProp.getStringList());
