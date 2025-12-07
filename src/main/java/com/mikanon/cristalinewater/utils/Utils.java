@@ -26,8 +26,11 @@ public class Utils {
 
     public static boolean isWaterPlant(World world, int x, int y, int z) {
 
-        if (!(world.getBlock(x, y, z) instanceof BlockBush)) return false;
+        //todo posible conflicto con otros liquidos
+        Block block = world.getBlock(x, y, z);
+        if (!block.isOpaqueCube() && block.getMaterial() == Material.water) return true;
 
+        if (!(world.getBlock(x, y, z) instanceof BlockBush)) return false;
         int adjacent = 0;
 
         //4 lados
