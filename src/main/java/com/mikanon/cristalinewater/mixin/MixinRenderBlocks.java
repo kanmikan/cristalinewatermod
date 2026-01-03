@@ -13,6 +13,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(RenderBlocks.class)
@@ -31,10 +32,12 @@ public abstract class MixinRenderBlocks {
     }
     */
 
-    @Inject(method = "renderBlockCauldron", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderBlocks;renderFaceYPos(Lnet/minecraft/block/Block;DDDLnet/minecraft/util/IIcon;)V", ordinal = 1, shift = At.Shift.BEFORE))
-    private void onBeforeCauldronWater(BlockCauldron block, int x, int y, int z, CallbackInfoReturnable<Boolean> cir) {
+    @Inject(method = "renderBlockCauldron", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/client/renderer/RenderBlocks;renderFaceYPos(Lnet/minecraft/block/Block;DDDLnet/minecraft/util/IIcon;)V", shift = At.Shift.BEFORE),
+            slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/block/BlockLiquid;getLiquidIcon(Ljava/lang/String;)Lnet/minecraft/util/IIcon;")))
+    private void cw_onBeforeCauldronWater(BlockCauldron block, int x, int y, int z, CallbackInfoReturnable<Boolean> cir) {
         int meta = this.blockAccess.getBlockMetadata(x, y, z);
-        if (meta == 0) return;
+        if (meta <= 0) return;
         if (Config.TINT_CAULDRON_WATER) {
             int[] avg = BiomeColors.averageColorBlend(this.blockAccess, x, z, Config.DEFAULT_BIOME_BLEND_RADIUS);
             Tessellator.instance.setColorOpaque((avg[0] / avg[3]), (avg[1] / avg[3]), (avg[2] / avg[3]));
@@ -45,7 +48,7 @@ public abstract class MixinRenderBlocks {
     }
 
     @Inject(method = "renderBlockCauldron", at = @At("RETURN"))
-    private void onAfterCauldronWater(BlockCauldron block, int x, int y, int z, CallbackInfoReturnable<Boolean> cir) {
+    private void cw_onAfterCauldronWater(BlockCauldron block, int x, int y, int z, CallbackInfoReturnable<Boolean> cir) {
         Tessellator.instance.setColorOpaque_F(1.0F, 1.0F, 1.0F);
     }
 
