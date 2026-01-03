@@ -19,6 +19,7 @@ public class Config {
     public static boolean GRAYSCALE_WATER = true;
     public static boolean TRANSPARENT_WATER_SIDES = true;
     public static boolean UNDERWATER_SOUNDS = true;
+    public static boolean TINT_CAULDRON_WATER = true;
 
     public static boolean UNDERWATER_AIR_POCKETS = true;
     public static int UNDERWATER_AIR_VOLUME_CHECK_AREA = 10;
@@ -37,6 +38,7 @@ public class Config {
         GRAYSCALE_WATER = config.get("graphics", "GrayscaleWater", true, "If true, a grayscale texture will be used instead of the vanilla one.").getBoolean();
         TRANSPARENT_WATER_SIDES = config.get("graphics", "TransparentWaterSides", true, "If true, water touching glass will not render its side.").getBoolean();
         UNDERWATER_SOUNDS = config.get("graphics", "UnderwaterSounds", true, "If true, it uses underwater sound effects.").getBoolean();
+        TINT_CAULDRON_WATER = config.get("graphics", "TintCauldronWater", true, "If true, cauldron water will be tinted based on the biome").getBoolean();
 
         DEFAULT_WATER = config.get("graphics", "BaseWaterColor", DEFAULT_WATER, "Default water color").getInt();
         DEFAULT_BIOME_BLEND_RADIUS = config.get("graphics", "BiomeBlendRadius", DEFAULT_BIOME_BLEND_RADIUS, "Water biome blending radius (in blocks), bigger value = smoother and slower").getInt();

@@ -10,7 +10,8 @@
     "mixins": [
       "MixinBlockLiquid",
       "MixinBlockAccessor",
-	  "MixinEntityPlayer"
+	  "MixinEntityPlayer",
+      "MixinForgeFluid"
     ],
 	"client": [
       "MixinEntityRenderer",
@@ -19,7 +20,5 @@
       "MixinRenderGlobal",
       "MixinEntity",
       "MixinRenderBlocks"
-	],
-	"server": [
 	]
 }

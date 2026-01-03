@@ -35,9 +35,13 @@ public abstract class MixinRenderBlocks {
     private void onBeforeCauldronWater(BlockCauldron block, int x, int y, int z, CallbackInfoReturnable<Boolean> cir) {
         int meta = this.blockAccess.getBlockMetadata(x, y, z);
         if (meta == 0) return;
-
-        int[] avg = BiomeColors.averageColorBlend(this.blockAccess, x, z, Config.DEFAULT_BIOME_BLEND_RADIUS);
-        Tessellator.instance.setColorOpaque((avg[0] / avg[3]), (avg[1] / avg[3]), (avg[2] / avg[3]));
+        if (Config.TINT_CAULDRON_WATER) {
+            int[] avg = BiomeColors.averageColorBlend(this.blockAccess, x, z, Config.DEFAULT_BIOME_BLEND_RADIUS);
+            Tessellator.instance.setColorOpaque((avg[0] / avg[3]), (avg[1] / avg[3]), (avg[2] / avg[3]));
+        } else {
+            int def = Config.DEFAULT_WATER;
+            Tessellator.instance.setColorOpaque((def >> 16) & 0xFF, (def >> 8) & 0xFF, def & 0xFF);
+        }
     }
 
     @Inject(method = "renderBlockCauldron", at = @At("RETURN"))
