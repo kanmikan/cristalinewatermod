@@ -2,6 +2,8 @@ package com.mikanon.cristalinewater.mixin;
 
 import com.mikanon.cristalinewater.Config;
 import com.mikanon.cristalinewater.biome.BiomeColors;
+import com.mikanon.cristalinewater.compat.FTweaksReflection;
+import cpw.mods.fml.common.Loader;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCauldron;
 import net.minecraft.block.material.Material;
@@ -40,16 +42,16 @@ public abstract class MixinRenderBlocks {
         if (meta <= 0) return;
         if (Config.TINT_CAULDRON_WATER) {
             int[] avg = BiomeColors.averageColorBlend(this.blockAccess, x, z, Config.DEFAULT_BIOME_BLEND_RADIUS);
-            Tessellator.instance.setColorOpaque((avg[0] / avg[3]), (avg[1] / avg[3]), (avg[2] / avg[3]));
+            setColorOpaque((avg[0] / avg[3]), (avg[1] / avg[3]), (avg[2] / avg[3]));
         } else {
             int def = Config.DEFAULT_WATER;
-            Tessellator.instance.setColorOpaque((def >> 16) & 0xFF, (def >> 8) & 0xFF, def & 0xFF);
+            setColorOpaque((def >> 16) & 0xFF, (def >> 8) & 0xFF, def & 0xFF);
         }
     }
 
     @Inject(method = "renderBlockCauldron", at = @At("RETURN"))
     private void cw_onAfterCauldronWater(BlockCauldron block, int x, int y, int z, CallbackInfoReturnable<Boolean> cir) {
-        Tessellator.instance.setColorOpaque_F(1.0F, 1.0F, 1.0F);
+        setColorOpaque(255, 255, 255);
     }
 
     @Redirect(method = "renderBlockLiquid", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/Block;colorMultiplier(Lnet/minecraft/world/IBlockAccess;III)I"))
@@ -59,6 +61,14 @@ public abstract class MixinRenderBlocks {
             return ((avg[0] / avg[3]) << 16) | ((avg[1] / avg[3]) << 8) |  (avg[2] / avg[3]);
         }
         return block.colorMultiplier(world, x, y, z);
+    }
+
+    private void setColorOpaque(int r, int g, int b) {
+        if (FTweaksReflection.canUse()) {
+            FTweaksReflection.getThreadTessellator().setColorOpaque(r, g, b);
+        } else {
+            Tessellator.instance.setColorOpaque(r, g, b);
+        }
     }
 
 }
