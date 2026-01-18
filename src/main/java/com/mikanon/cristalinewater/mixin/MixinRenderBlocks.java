@@ -3,12 +3,12 @@ package com.mikanon.cristalinewater.mixin;
 import com.mikanon.cristalinewater.Config;
 import com.mikanon.cristalinewater.biome.BiomeColors;
 import com.mikanon.cristalinewater.compat.FTweaksReflection;
-import cpw.mods.fml.common.Loader;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCauldron;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -63,11 +63,32 @@ public abstract class MixinRenderBlocks {
         return block.colorMultiplier(world, x, y, z);
     }
 
+    @Redirect(method = "renderBlockLiquid", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/client/renderer/RenderBlocks;renderFaceYNeg(Lnet/minecraft/block/Block;DDDLnet/minecraft/util/IIcon;)V"))
+    private void onBlockLiquidRenderFaceYNeg(RenderBlocks rb, Block block, double x, double y, double z, IIcon icon) {
+        if (block.getMaterial() == Material.water) {
+            int[] avg = BiomeColors.averageColorBlend(rb.blockAccess, (int) x, (int) z, Config.DEFAULT_BIOME_BLEND_RADIUS);
+            float r = (float) avg[0] / (float) avg[3] / 255.0f;
+            float g = (float) avg[1] / (float) avg[3] / 255.0f;
+            float b = (float) avg[2] / (float) avg[3] / 255.0f;
+            setColorOpaque_F(r * 0.5f, g * 0.5f, b * 0.5f);
+        }
+        rb.renderFaceYNeg(block, x, y, z, icon);
+    }
+
     private void setColorOpaque(int r, int g, int b) {
         if (FTweaksReflection.canUse()) {
             FTweaksReflection.getThreadTessellator().setColorOpaque(r, g, b);
         } else {
             Tessellator.instance.setColorOpaque(r, g, b);
+        }
+    }
+
+    private void setColorOpaque_F(float r, float g, float b) {
+        if (FTweaksReflection.canUse()) {
+            FTweaksReflection.getThreadTessellator().setColorOpaque_F(r, g, b);
+        } else {
+            Tessellator.instance.setColorOpaque_F(r, g, b);
         }
     }
 

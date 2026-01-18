@@ -17,7 +17,7 @@ public class Config {
     public static int DEFAULT_FOG_BLEND_RADIUS = 2;
 
     public static boolean GRAYSCALE_WATER = true;
-    public static boolean TRANSPARENT_WATER_SIDES = true;
+    public static boolean TRANSPARENT_WATER_SIDES = false;
     public static boolean UNDERWATER_SOUNDS = true;
     public static boolean TINT_CAULDRON_WATER = true;
 
@@ -36,7 +36,7 @@ public class Config {
         config.load();
 
         GRAYSCALE_WATER = config.get("graphics", "GrayscaleWater", true, "If true, a grayscale texture will be used instead of the vanilla one.").getBoolean();
-        TRANSPARENT_WATER_SIDES = config.get("graphics", "TransparentWaterSides", true, "If true, water touching glass will not render its side.").getBoolean();
+        TRANSPARENT_WATER_SIDES = config.get("graphics", "TransparentWaterSides", false, "If true, water touching glass will not render its side.").getBoolean();
         UNDERWATER_SOUNDS = config.get("graphics", "UnderwaterSounds", true, "If true, it uses underwater sound effects.").getBoolean();
         TINT_CAULDRON_WATER = config.get("graphics", "TintCauldronWater", true, "If true, cauldron water will be tinted based on the biome").getBoolean();
 
