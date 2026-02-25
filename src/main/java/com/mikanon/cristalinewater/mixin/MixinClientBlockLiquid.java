@@ -26,7 +26,7 @@ public abstract class MixinClientBlockLiquid {
     @Inject(method = "colorMultiplier", at = @At("HEAD"), cancellable = true)
     private void onColorMultiplier(IBlockAccess world, int x, int y, int z, CallbackInfoReturnable<Integer> cir) {
         Block block = (Block) (Object) this;
-        if (block.getMaterial() == Material.water) {
+        if (block.getMaterial() == Material.water && Config.GRAYSCALE_WATER) {
             int[] average = BiomeColors.averageColorBlend(world, x, z, Config.DEFAULT_BIOME_BLEND_RADIUS);
             int result = ((average[0] / average[3]) << 16) | ((average[1] / average[3]) << 8) | (average[2] / average[3]);
             cir.setReturnValue(result);

@@ -14,7 +14,7 @@ public abstract class MixinForgeFluid {
 
     @Inject(method = "getColor(Lnet/minecraftforge/fluids/FluidStack;)I", at = @At("HEAD"), cancellable = true, remap = false)
     private void onGetColor(FluidStack stack, CallbackInfoReturnable<Integer> cir) {
-        if (stack != null && (Object) this == FluidRegistry.WATER) {
+        if (stack != null && (Object) this == FluidRegistry.WATER && Config.GRAYSCALE_WATER) {
             cir.setReturnValue(Config.DEFAULT_WATER);
         }
     }

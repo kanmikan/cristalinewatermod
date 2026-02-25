@@ -34,12 +34,15 @@ public abstract class MixinRenderBlocks {
     }
     */
 
+
     @Inject(method = "renderBlockCauldron", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/client/renderer/RenderBlocks;renderFaceYPos(Lnet/minecraft/block/Block;DDDLnet/minecraft/util/IIcon;)V", shift = At.Shift.BEFORE),
             slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/block/BlockLiquid;getLiquidIcon(Ljava/lang/String;)Lnet/minecraft/util/IIcon;")))
     private void cw_onBeforeCauldronWater(BlockCauldron block, int x, int y, int z, CallbackInfoReturnable<Boolean> cir) {
         int meta = this.blockAccess.getBlockMetadata(x, y, z);
         if (meta <= 0) return;
+        if (!Config.GRAYSCALE_WATER) return;
+
         if (Config.TINT_CAULDRON_WATER) {
             int[] avg = BiomeColors.averageColorBlend(this.blockAccess, x, z, Config.DEFAULT_BIOME_BLEND_RADIUS);
             setColorOpaque((avg[0] / avg[3]), (avg[1] / avg[3]), (avg[2] / avg[3]));
@@ -56,7 +59,7 @@ public abstract class MixinRenderBlocks {
 
     @Redirect(method = "renderBlockLiquid", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/Block;colorMultiplier(Lnet/minecraft/world/IBlockAccess;III)I"))
     private int onBlockLiquidColorMultiplier(Block block, IBlockAccess world, int x, int y, int z) {
-        if (block.getMaterial() == Material.water) {
+        if (block.getMaterial() == Material.water && Config.GRAYSCALE_WATER) {
             int[] avg = BiomeColors.averageColorBlend(world, x, z, Config.DEFAULT_BIOME_BLEND_RADIUS);
             return ((avg[0] / avg[3]) << 16) | ((avg[1] / avg[3]) << 8) |  (avg[2] / avg[3]);
         }
@@ -66,7 +69,7 @@ public abstract class MixinRenderBlocks {
     @Redirect(method = "renderBlockLiquid", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/client/renderer/RenderBlocks;renderFaceYNeg(Lnet/minecraft/block/Block;DDDLnet/minecraft/util/IIcon;)V"))
     private void onBlockLiquidRenderFaceYNeg(RenderBlocks rb, Block block, double x, double y, double z, IIcon icon) {
-        if (block.getMaterial() == Material.water) {
+        if (block.getMaterial() == Material.water && Config.GRAYSCALE_WATER) {
             int[] avg = BiomeColors.averageColorBlend(rb.blockAccess, (int) x, (int) z, Config.DEFAULT_BIOME_BLEND_RADIUS);
             float r = (float) avg[0] / (float) avg[3] / 255.0f;
             float g = (float) avg[1] / (float) avg[3] / 255.0f;
